@@ -1,10 +1,28 @@
 /*
+ * MIT License
  *
- * Copyright 2001-2017 Suzhou CyberTech Technology Co., Ltd.
+ * Copyright (c) 2017 JinhuaiLee
  *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  */
 
-package cn.com.cybertech.util.codegenerator;
+package com.grandlynn.utils.codegenerator;
 
 import com.google.common.base.CaseFormat;
 import freemarker.template.TemplateExceptionHandler;
@@ -37,14 +55,12 @@ public class CodeGenerator {
      * 项目在硬盘上的基础路径
      */
     private static String PROJECT_PATH = System.getProperty("user.dir");
+
+    private static final String DIR = System.getProperty("user.dir");
     /**
      * 模板位置
      */
-    private static final String TEMPLATE_PATH = "/src/main/resources/generator/template";
-    /**
-     * 模板在硬盘的位置
-     */
-    private static String TEMPLATE_FILE_PATH;
+    private static final String TEMPLATE_PATH = "/template";
     /**
      * java文件路径
      */
@@ -80,7 +96,7 @@ public class CodeGenerator {
     /**
      * Mapper插件基础接口的完全限定名
      */
-    private static final String MAPPER_INTERFACE_REFERENCE = "cn.com.cybertech.bootframe.dao.common.CommonMapper";
+    private static final String MAPPER_INTERFACE_REFERENCE = "com.grandlynn.bootframe.dao.common.CommonMapper";
     /**
      * Model所在包
      */
@@ -104,22 +120,23 @@ public class CodeGenerator {
      * @author
      */
     private static String AUTHOR;
+
     /**
      * @date
      */
     private static final String DATE = new SimpleDateFormat("yyyy/MM/dd HH:mm").format(new Date());
 
 
-    public static void initCodeGenerator(String beanPackage, String application, String web, String service, String dao, String model) {
+    public static void initCodeGenerator(String projectPath, String beanPackage, String application, String web, String service, String dao, String model) {
+        PROJECT_PATH = "".equals(projectPath) ? PROJECT_PATH : projectPath;
         PROJECT_APPLICATION_PATH = PROJECT_PATH + "/" + application;
         PROJECT_WEB_PATH = PROJECT_PATH + "/" + web;
         PROJECT_SERVICE_PATH = PROJECT_PATH + "/" + service;
         PROJECT_DAO_PATH = PROJECT_PATH + "/" + dao;
         PROJECT_MODEL_PATH = PROJECT_PATH + "/" + model;
-        TEMPLATE_FILE_PATH = PROJECT_APPLICATION_PATH + TEMPLATE_PATH;
         Properties properties = new Properties();
         try {
-            InputStream in = new BufferedInputStream(new FileInputStream(PROJECT_APPLICATION_PATH + RESOURCES_PATH + "/generator/codeGenerator.properties"));
+            InputStream in = Object.class.getResourceAsStream("/codeGenerator.properties");
             properties.load(in);
         } catch (Exception e) {
             e.printStackTrace();
@@ -358,7 +375,7 @@ public class CodeGenerator {
 
     private static freemarker.template.Configuration getConfiguration() throws IOException {
         freemarker.template.Configuration cfg = new freemarker.template.Configuration(freemarker.template.Configuration.VERSION_2_3_23);
-        cfg.setDirectoryForTemplateLoading(new File(TEMPLATE_FILE_PATH));
+        cfg.setClassForTemplateLoading(CodeGenerator.class, TEMPLATE_PATH);
         cfg.setDefaultEncoding("UTF-8");
         cfg.setTemplateExceptionHandler(TemplateExceptionHandler.IGNORE_HANDLER);
         return cfg;

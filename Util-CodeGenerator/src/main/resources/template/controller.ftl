@@ -2,7 +2,7 @@ package ${basePackage}.web.controller.${beanPackage};
 
 import ${basePackage}.web.result.Result;
 import ${basePackage}.web.result.ResultGenerator;
-import ${basePackage}.model..${beanPackage}.${modelNameUpperCamel};
+import ${basePackage}.model.${beanPackage}.${modelNameUpperCamel};
 import ${basePackage}.service.${beanPackage}.${modelNameUpperCamel}Service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
