@@ -31,17 +31,20 @@ package com.grandlynn.utils.codegenerator;
 public class RunCodeGenerator {
     public static void main(String[] args) {
 
+        //项目物理磁盘路径
+        String projectPath = "";
+        //项目名称
         String projectName = "BootFrame";
 
         /**
          * 参数1： controller 和service生成的上级包名，不填则为默认连接数据库用户
          * 不填则为默认的数据库用户名
          */
-        CodeGenerator.initCodeGenerator("","", projectName+"-application", projectName+"-web", projectName+"-service", projectName+"-dao", projectName+"-model");
+        CodeGenerator.initCodeGenerator(projectPath, projectName, "", "application", "web", "service", "dao", "model");
         /**
          * 参数1：数据表用户名，不填则为默认连接数据库用户
          * 参数2："输入表名"，若%表示所有表
          */
-        CodeGenerator.genCode("jj", "SHH_FW");
+        CodeGenerator.genCode("", "%");
     }
 }

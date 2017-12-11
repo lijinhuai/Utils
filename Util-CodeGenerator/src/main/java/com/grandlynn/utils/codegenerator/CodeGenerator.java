@@ -31,7 +31,10 @@ import org.mybatis.generator.api.MyBatisGenerator;
 import org.mybatis.generator.config.*;
 import org.mybatis.generator.internal.DefaultShellCallback;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -55,8 +58,6 @@ public class CodeGenerator {
      * 项目在硬盘上的基础路径
      */
     private static String PROJECT_PATH = System.getProperty("user.dir");
-
-    private static final String DIR = System.getProperty("user.dir");
     /**
      * 模板位置
      */
@@ -127,13 +128,13 @@ public class CodeGenerator {
     private static final String DATE = new SimpleDateFormat("yyyy/MM/dd HH:mm").format(new Date());
 
 
-    public static void initCodeGenerator(String projectPath, String beanPackage, String application, String web, String service, String dao, String model) {
+    public static void initCodeGenerator(String projectPath, String projectName, String beanPackage, String application, String web, String service, String dao, String model) {
         PROJECT_PATH = "".equals(projectPath) ? PROJECT_PATH : projectPath;
-        PROJECT_APPLICATION_PATH = PROJECT_PATH + "/" + application;
-        PROJECT_WEB_PATH = PROJECT_PATH + "/" + web;
-        PROJECT_SERVICE_PATH = PROJECT_PATH + "/" + service;
-        PROJECT_DAO_PATH = PROJECT_PATH + "/" + dao;
-        PROJECT_MODEL_PATH = PROJECT_PATH + "/" + model;
+        PROJECT_APPLICATION_PATH = PROJECT_PATH + "/" + projectName + "-" + application;
+        PROJECT_WEB_PATH = PROJECT_PATH + "/" + projectName + "-" + web;
+        PROJECT_SERVICE_PATH = PROJECT_PATH + "/" + projectName + "-" + service;
+        PROJECT_DAO_PATH = PROJECT_PATH + "/" + projectName + "-" + dao;
+        PROJECT_MODEL_PATH = PROJECT_PATH + "/" + projectName + "-" + model;
         Properties properties = new Properties();
         try {
             InputStream in = Object.class.getResourceAsStream("/codeGenerator.properties");
@@ -148,7 +149,7 @@ public class CodeGenerator {
         JDBC_DIVER_CLASS_NAME = properties.getProperty("JDBC_DIVER_CLASS_NAME");
 
 
-        BASE_PACKAGE = properties.getProperty("BASE_PACKAGE");
+        BASE_PACKAGE = properties.getProperty("BASE_PACKAGE")+"."+projectName.toLowerCase();
 
         if ("".equals(beanPackage)) {
             BEAN_PACKAGE = JDBC_USERNAME;
@@ -157,14 +158,14 @@ public class CodeGenerator {
         }
 
 
-        PACKAGE_PATH_CONTROLLER = packageConvertPath(properties.getProperty("CONTROLLER_PACKAGE") + "." + BEAN_PACKAGE);
+        PACKAGE_PATH_CONTROLLER = packageConvertPath(BASE_PACKAGE + "." + properties.getProperty("CONTROLLER_PACKAGE") + "." + BEAN_PACKAGE);
 
-        PACKAGE_PATH_SERVICE = packageConvertPath(properties.getProperty("SERVICE_PACKAGE") + "." + BEAN_PACKAGE);
-        PACKAGE_PATH_SERVICE_IMPL = packageConvertPath(properties.getProperty("SERVICE_PACKAGE") + "." + BEAN_PACKAGE + ".impl");
+        PACKAGE_PATH_SERVICE = packageConvertPath(BASE_PACKAGE + "." + properties.getProperty("SERVICE_PACKAGE") + "." + BEAN_PACKAGE);
+        PACKAGE_PATH_SERVICE_IMPL = packageConvertPath(BASE_PACKAGE + "." + properties.getProperty("SERVICE_PACKAGE") + "." + BEAN_PACKAGE + ".impl");
 
-        MAPPER_PACKAGE = properties.getProperty("MAPPER_PACKAGE");
+        MAPPER_PACKAGE = BASE_PACKAGE + "." + properties.getProperty("MAPPER_PACKAGE");
 
-        MODEL_PACKAGE = properties.getProperty("MODEL_PACKAGE");
+        MODEL_PACKAGE = BASE_PACKAGE + "." + properties.getProperty("MODEL_PACKAGE");
 
         AUTHOR = properties.getProperty("AUTHOR");
 
