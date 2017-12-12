@@ -65,13 +65,6 @@ public class FtpUtil {
             }
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            if (ftpClient.isConnected()) {
-                try {
-                    ftpClient.disconnect();
-                } catch (IOException ioe) {
-                }
-            }
         }
         return ftpClient;
     }
@@ -135,13 +128,6 @@ public class FtpUtil {
                 result = true;
             } catch (IOException e) {
                 e.printStackTrace();
-            } finally {
-                if (ftpClient.isConnected()) {
-                    try {
-                        ftpClient.disconnect();
-                    } catch (IOException ioe) {
-                    }
-                }
             }
         }
         return result;
@@ -171,17 +157,9 @@ public class FtpUtil {
                         is.close();
                     }
                 }
-                ftpClient.logout();
                 result = true;
             } catch (IOException e) {
                 e.printStackTrace();
-            } finally {
-                if (ftpClient.isConnected()) {
-                    try {
-                        ftpClient.disconnect();
-                    } catch (IOException ioe) {
-                    }
-                }
             }
         }
         return result;
@@ -203,13 +181,6 @@ public class FtpUtil {
                 list = Arrays.asList(fileNames);
             } catch (IOException e) {
                 e.printStackTrace();
-            } finally {
-                if (ftpClient.isConnected()) {
-                    try {
-                        ftpClient.disconnect();
-                    } catch (IOException ioe) {
-                    }
-                }
             }
         }
         return list;
@@ -233,13 +204,6 @@ public class FtpUtil {
                 ins = ftpClient.retrieveFileStream(fileName);
             } catch (IOException e) {
                 e.printStackTrace();
-            } finally {
-                if (ftpClient.isConnected()) {
-                    try {
-                        ftpClient.disconnect();
-                    } catch (IOException ioe) {
-                    }
-                }
             }
         }
         return ins;
@@ -262,13 +226,6 @@ public class FtpUtil {
                 result = ftpClient.deleteFile(remotePath + fileName);
             } catch (IOException e) {
                 e.printStackTrace();
-            } finally {
-                if (ftpClient.isConnected()) {
-                    try {
-                        ftpClient.disconnect();
-                    } catch (IOException ioe) {
-                    }
-                }
             }
         }
         return result;
@@ -293,13 +250,6 @@ public class FtpUtil {
                 }
             } catch (IOException e) {
                 e.printStackTrace();
-            } finally {
-                if (ftpClient.isConnected()) {
-                    try {
-                        ftpClient.disconnect();
-                    } catch (IOException ioe) {
-                    }
-                }
             }
         }
         return result;
