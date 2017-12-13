@@ -58,8 +58,19 @@ public class HttpRequester {
      * @return 响应对象
      * @throws IOException
      */
-    public HttpRespons sendGet(String urlString) throws IOException {
-        return this.send(urlString, "GET", null, null);
+    public HttpResponse sendGetRequest(String urlString) throws IOException {
+        return this.sendHttpRequest(urlString, "GET", null, null);
+    }
+
+    /**
+     * 发送GET请求
+     *
+     * @param urlString URL地址
+     * @return IO流
+     * @throws IOException
+     */
+    public HttpResponse sendGetRequestResponseStream(String urlString) throws IOException {
+        return this.sendHttpRequest(urlString, "GET", null, null);
     }
 
     /**
@@ -70,10 +81,21 @@ public class HttpRequester {
      * @return 响应对象
      * @throws IOException
      */
-    public HttpRespons sendGet(String urlString, Map<String, String> params) throws IOException {
-        return this.send(urlString, "GET", params, null);
+    public HttpResponse sendGetRequest(String urlString, Map<String, String> params) throws IOException {
+        return this.sendHttpRequest(urlString, "GET", params, null);
     }
 
+    /**
+     * 发送GET请求
+     *
+     * @param urlString URL地址
+     * @param params    参数集合
+     * @return IO流
+     * @throws IOException
+     */
+    public InputStream sendGetRequestResponseStream(String urlString, Map<String, String> params) throws IOException {
+        return this.sendHttpRequestResponseStream(urlString, "GET", params, null);
+    }
 
     /**
      * 发送GET请求
@@ -84,8 +106,21 @@ public class HttpRequester {
      * @return 响应对象
      * @throws IOException
      */
-    public HttpRespons sendGet(String urlString, Map<String, String> params, Map<String, String> propertys) throws IOException {
-        return this.send(urlString, "GET", params, propertys);
+    public HttpResponse sendGetRequest(String urlString, Map<String, String> params, Map<String, String> propertys) throws IOException {
+        return this.sendHttpRequest(urlString, "GET", params, propertys);
+    }
+
+    /**
+     * 发送GET请求
+     *
+     * @param urlString URL地址
+     * @param params    参数集合
+     * @param propertys 请求属性
+     * @return IO流
+     * @throws IOException
+     */
+    public InputStream sendGetRequestResponseStream(String urlString, Map<String, String> params, Map<String, String> propertys) throws IOException {
+        return this.sendHttpRequestResponseStream(urlString, "GET", params, propertys);
     }
 
     /**
@@ -95,8 +130,30 @@ public class HttpRequester {
      * @return 响应对象
      * @throws IOException
      */
-    public HttpRespons sendPost(String urlString) throws IOException {
-        return this.send(urlString, "POST", null, null);
+    public HttpResponse sendPostRequest(String urlString) throws IOException {
+        return this.sendHttpRequest(urlString, "POST", null, null);
+    }
+
+    /**
+     * 以JSON传参方式发送POST请求
+     *
+     * @param urlString URL地址
+     * @return 响应对象
+     * @throws IOException
+     */
+    public HttpResponse sendPostRequestJson(String urlString) throws IOException {
+        return this.sendHttpRequestJson(urlString, "POST", null, null);
+    }
+
+    /**
+     * 发送POST请求
+     *
+     * @param urlString URL地址
+     * @return IO流
+     * @throws IOException
+     */
+    public InputStream sendPostRequestResponseStream(String urlString) throws IOException {
+        return this.sendHttpRequestResponseStream(urlString, "POST", null, null);
     }
 
     /**
@@ -107,8 +164,8 @@ public class HttpRequester {
      * @return 响应对象
      * @throws IOException
      */
-    public HttpRespons sendPost(String urlString, Map<String, String> params) throws IOException {
-        return this.send(urlString, "POST", params, null);
+    public HttpResponse sendPostRequest(String urlString, Map<String, String> params) throws IOException {
+        return this.sendHttpRequest(urlString, "POST", params, null);
     }
 
     /**
@@ -119,8 +176,20 @@ public class HttpRequester {
      * @return 响应对象
      * @throws IOException
      */
-    public HttpRespons sendPostJson(String urlString, Map<String, String> params) throws IOException {
-        return this.sendJson(urlString, "POST", params, null);
+    public HttpResponse sendPostRequestJson(String urlString, Map<String, String> params) throws IOException {
+        return this.sendHttpRequestJson(urlString, "POST", params, null);
+    }
+
+    /**
+     * 发送POST请求
+     *
+     * @param urlString URL地址
+     * @param params    参数集合
+     * @return IO流
+     * @throws IOException
+     */
+    public InputStream sendPostRequestResponseStream(String urlString, Map<String, String> params) throws IOException {
+        return this.sendHttpRequestResponseStream(urlString, "POST", params, null);
     }
 
     /**
@@ -132,8 +201,8 @@ public class HttpRequester {
      * @return 响应对象
      * @throws IOException
      */
-    public HttpRespons sendPost(String urlString, Map<String, String> params, Map<String, String> propertys) throws IOException {
-        return this.send(urlString, "POST", params, propertys);
+    public HttpResponse sendPostRequest(String urlString, Map<String, String> params, Map<String, String> propertys) throws IOException {
+        return this.sendHttpRequest(urlString, "POST", params, propertys);
     }
 
     /**
@@ -145,8 +214,21 @@ public class HttpRequester {
      * @return 响应对象
      * @throws IOException
      */
-    public HttpRespons sendPostJson(String urlString, Map<String, String> params, Map<String, String> propertys) throws IOException {
-        return this.sendJson(urlString, "POST", params, propertys);
+    public HttpResponse sendPostRequestJson(String urlString, Map<String, String> params, Map<String, String> propertys) throws IOException {
+        return this.sendHttpRequestJson(urlString, "POST", params, propertys);
+    }
+
+    /**
+     * 发送POST请求
+     *
+     * @param urlString URL地址
+     * @param params    参数集合
+     * @param propertys 请求属性
+     * @return IO流
+     * @throws IOException
+     */
+    public InputStream sendPostRequestResponseStream(String urlString, Map<String, String> params, Map<String, String> propertys) throws IOException {
+        return this.sendHttpRequestResponseStream(urlString, "POST", params, propertys);
     }
 
     /**
@@ -156,22 +238,11 @@ public class HttpRequester {
      * @return 响映对象
      * @throws IOException
      */
-    private HttpRespons send(String urlString, String method, Map<String, String> parameters, Map<String, String> propertys) throws IOException {
+    private HttpResponse sendHttpRequest(String urlString, String method, Map<String, String> parameters, Map<String, String> propertys) throws IOException {
         HttpURLConnection urlConnection;
 
         if (method.equalsIgnoreCase(HTTP_METHOD_GET) && parameters != null) {
-            StringBuffer param = new StringBuffer();
-            int i = 0;
-            for (String key : parameters.keySet()) {
-                if (i == 0) {
-                    param.append("?");
-                } else {
-                    param.append("&");
-                }
-                param.append(key).append("=").append(parameters.get(key));
-                i++;
-            }
-            urlString += param;
+            urlString += getParamStrBuffer(parameters);
         }
         URL url = new URL(urlString);
         urlConnection = (HttpURLConnection) url.openConnection();
@@ -209,7 +280,7 @@ public class HttpRequester {
      * @return 响映对象
      * @throws IOException
      */
-    private HttpRespons sendJson(String urlString, String method, Map<String, String> parameters, Map<String, String> propertys) throws IOException {
+    private HttpResponse sendHttpRequestJson(String urlString, String method, Map<String, String> parameters, Map<String, String> propertys) throws IOException {
         HttpURLConnection urlConnection;
 
         URL url = new URL(urlString);
@@ -240,23 +311,51 @@ public class HttpRequester {
     }
 
     /**
+     * 发送HTTP请求
+     *
+     * @param urlString
+     * @return IO流
+     * @throws IOException
+     */
+    private InputStream sendHttpRequestResponseStream(String urlString, String method, Map<String, String> parameters, Map<String, String> propertys) throws IOException {
+        HttpURLConnection urlConnection;
+
+        urlString += getParamStrBuffer(parameters);
+        URL url = new URL(urlString);
+        urlConnection = (HttpURLConnection) url.openConnection();
+
+        urlConnection.setRequestMethod(method);
+        urlConnection.setDoOutput(true);
+        urlConnection.setDoInput(true);
+        urlConnection.setUseCaches(false);
+
+        if (propertys != null) {
+            for (String key : propertys.keySet()) {
+                urlConnection.addRequestProperty(key, propertys.get(key));
+            }
+        }
+
+        return urlConnection.getInputStream();
+    }
+
+    /**
      * 得到响应对象
      *
      * @param urlConnection
      * @return 响应对象
      * @throws IOException
      */
-    private HttpRespons makeContent(String urlString, HttpURLConnection urlConnection) throws IOException {
-        HttpRespons httpResponser = new HttpRespons();
+    private HttpResponse makeContent(String urlString, HttpURLConnection urlConnection) throws IOException {
+        HttpResponse httpResponse = new HttpResponse();
         try {
             InputStream in = urlConnection.getInputStream();
             BufferedReader bufferedReader = new BufferedReader(
                 new InputStreamReader(in));
-            httpResponser.contentCollection = new Vector<>();
+            httpResponse.contentCollection = new Vector<>();
             StringBuffer temp = new StringBuffer();
             String line = bufferedReader.readLine();
             while (line != null) {
-                httpResponser.contentCollection.add(line);
+                httpResponse.contentCollection.add(line);
                 temp.append(line).append("\r\n");
                 line = bufferedReader.readLine();
             }
@@ -267,28 +366,28 @@ public class HttpRequester {
                 ecod = this.defaultContentEncoding;
             }
 
-            httpResponser.urlString = urlString;
+            httpResponse.urlString = urlString;
 
-            httpResponser.defaultPort = urlConnection.getURL().getDefaultPort();
-            httpResponser.file = urlConnection.getURL().getFile();
-            httpResponser.host = urlConnection.getURL().getHost();
-            httpResponser.path = urlConnection.getURL().getPath();
-            httpResponser.port = urlConnection.getURL().getPort();
-            httpResponser.protocol = urlConnection.getURL().getProtocol();
-            httpResponser.query = urlConnection.getURL().getQuery();
-            httpResponser.ref = urlConnection.getURL().getRef();
-            httpResponser.userInfo = urlConnection.getURL().getUserInfo();
+            httpResponse.defaultPort = urlConnection.getURL().getDefaultPort();
+            httpResponse.file = urlConnection.getURL().getFile();
+            httpResponse.host = urlConnection.getURL().getHost();
+            httpResponse.path = urlConnection.getURL().getPath();
+            httpResponse.port = urlConnection.getURL().getPort();
+            httpResponse.protocol = urlConnection.getURL().getProtocol();
+            httpResponse.query = urlConnection.getURL().getQuery();
+            httpResponse.ref = urlConnection.getURL().getRef();
+            httpResponse.userInfo = urlConnection.getURL().getUserInfo();
 
-            httpResponser.content = new String(temp.toString().getBytes(), ecod);
-            httpResponser.contentEncoding = ecod;
-            httpResponser.code = urlConnection.getResponseCode();
-            httpResponser.message = urlConnection.getResponseMessage();
-            httpResponser.contentType = urlConnection.getContentType();
-            httpResponser.method = urlConnection.getRequestMethod();
-            httpResponser.connectTimeout = urlConnection.getConnectTimeout();
-            httpResponser.readTimeout = urlConnection.getReadTimeout();
+            httpResponse.content = new String(temp.toString().getBytes(), ecod);
+            httpResponse.contentEncoding = ecod;
+            httpResponse.code = urlConnection.getResponseCode();
+            httpResponse.message = urlConnection.getResponseMessage();
+            httpResponse.contentType = urlConnection.getContentType();
+            httpResponse.method = urlConnection.getRequestMethod();
+            httpResponse.connectTimeout = urlConnection.getConnectTimeout();
+            httpResponse.readTimeout = urlConnection.getReadTimeout();
 
-            return httpResponser;
+            return httpResponse;
         } catch (IOException e) {
             throw e;
         } finally {
@@ -310,5 +409,26 @@ public class HttpRequester {
      */
     public void setDefaultContentEncoding(String defaultContentEncoding) {
         this.defaultContentEncoding = defaultContentEncoding;
+    }
+
+    /**
+     * 拼接GET请求参数
+     *
+     * @param parameters 参数集合
+     * @return
+     */
+    private StringBuffer getParamStrBuffer(Map<String, String> parameters) {
+        StringBuffer param = new StringBuffer();
+        int i = 0;
+        for (String key : parameters.keySet()) {
+            if (i == 0) {
+                param.append("?");
+            } else {
+                param.append("&");
+            }
+            param.append(key).append("=").append(parameters.get(key));
+            i++;
+        }
+        return param;
     }
 }

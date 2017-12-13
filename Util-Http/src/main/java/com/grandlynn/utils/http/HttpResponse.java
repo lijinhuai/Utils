@@ -32,7 +32,7 @@ import java.util.Vector;
  * @author jinhuailee
  * @date 2017/12/12 16:24
  */
-public class HttpRespons {
+public class HttpResponse {
     String urlString;
 
     int defaultPort;
