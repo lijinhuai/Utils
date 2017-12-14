@@ -41,6 +41,9 @@
         <module>Util-Photo</module>
         <module>Util-File</module>
         <module>Util-Http</module>
+        <module>Util-Date</module>
+        <module>Util-Base64</module>
+        <module>Util-Stream</module>
     </modules>
 
     <properties>

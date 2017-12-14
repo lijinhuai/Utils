@@ -151,6 +151,10 @@ public class FtpUtil {
                 FTPFile[] fs = ftpClient.listFiles();
                 for (FTPFile ff : fs) {
                     if (ff.getName().equals(fileName)) {
+                        File p = new File(localPath);
+                        if (p.isDirectory() && !p.exists()) {
+                            p.mkdirs();
+                        }
                         File localFile = new File(localPath + "/" + ff.getName());
                         OutputStream is = new FileOutputStream(localFile);
                         ftpClient.retrieveFile(ff.getName(), is);
