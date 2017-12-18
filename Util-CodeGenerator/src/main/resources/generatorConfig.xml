@@ -30,7 +30,7 @@
 <!-- 使用 mvn mybatis-generator:generate -->
 <generatorConfiguration>
     <!-- 配置文件 -->
-    <properties resource="generator/codeGenerator.properties"/>
+    <properties resource="codeGenerator.properties"/>
 
     <context id="DB2Tables" targetRuntime="MyBatis3" defaultModelType="flat">
         <property name="beginningDelimiter" value="`"/>
