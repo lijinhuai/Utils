@@ -24,6 +24,7 @@
 
 package com.grandlynn.utils.date;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -41,12 +42,31 @@ public class UnixTimeUtil {
      * @param formats       要格式化的格式 默认："yyyy-MM-dd HH:mm:ss";
      * @return 返回结果 如："2016-09-05 16:06:42";
      */
-    public static String TimeStamp2Date(Long timestampLong, String formats) {
+    public static String TimeStamp2DateStr(Long timestampLong, String formats) {
         if ("".equals(formats)) {
             formats = "yyyy-MM-dd HH:mm:ss";
         }
         Long timestamp = timestampLong * 1000;
         String date = new SimpleDateFormat(formats, Locale.CHINA).format(new Date(timestamp));
+        return date;
+    }
+
+    /**
+     * 将Unix时间戳转换成日期格式
+     *
+     * @param timestampLong 时间戳 （精确到秒） 如："1473048265";
+     * @return 返回结果 Date;
+     */
+    public static Date TimeStamp2Date(Long timestampLong) {
+        String formats = "yyyy-MM-dd HH:mm:ss";
+        Long timestamp = timestampLong * 1000;
+        String dateStr = new SimpleDateFormat(formats, Locale.CHINA).format(new Date(timestamp));
+        Date date = null;
+        try {
+            date = new SimpleDateFormat().parse(dateStr);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         return date;
     }
 
@@ -57,14 +77,29 @@ public class UnixTimeUtil {
      * @param format  如：yyyy-MM-dd HH:mm:ss
      * @return 时间戳 （精确到秒）
      */
-    public static String Date2TimeStamp(String dateStr, String format) {
+    public static Long DateStr2TimeStamp(String dateStr, String format) {
         try {
             SimpleDateFormat sdf = new SimpleDateFormat(format);
-            return String.valueOf(sdf.parse(dateStr).getTime() / 1000);
+            return Long.valueOf(sdf.parse(dateStr).getTime() / 1000);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return "";
+        return Long.valueOf(0);
+    }
+
+    /**
+     * 日期格式字符串转换成时间戳 （精确到秒）
+     *
+     * @param date 日期
+     * @return 时间戳 （精确到秒）
+     */
+    public static Long Date2TimeStamp(Date date) {
+        try {
+            return Long.valueOf(date.getTime() / 1000);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Long.valueOf(0);
     }
 
     /**
