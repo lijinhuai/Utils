@@ -63,7 +63,7 @@ public class UnixTimeUtil {
         String dateStr = new SimpleDateFormat(formats, Locale.CHINA).format(new Date(timestamp));
         Date date = null;
         try {
-            date = new SimpleDateFormat().parse(dateStr);
+            date = new SimpleDateFormat(formats).parse(dateStr);
         } catch (ParseException e) {
             e.printStackTrace();
         }
