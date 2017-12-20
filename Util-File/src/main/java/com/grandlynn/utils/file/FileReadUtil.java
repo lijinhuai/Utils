@@ -114,7 +114,7 @@ public class FileReadUtil {
         File f = new File(filePath);
         BufferedReader br = null;
         try {
-            br = new BufferedReader(new FileReader(f));
+            br = new BufferedReader(new InputStreamReader(new FileInputStream(f), "utf-8"));
             String temp;
             while ((temp = br.readLine()) != null) {
                 s += temp;
