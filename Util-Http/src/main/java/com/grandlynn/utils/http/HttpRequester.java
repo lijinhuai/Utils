@@ -348,9 +348,13 @@ public class HttpRequester {
     private HttpResponse makeContent(String urlString, HttpURLConnection urlConnection) throws IOException {
         HttpResponse httpResponse = new HttpResponse();
         try {
+            String ecod = urlConnection.getContentEncoding();
+            if (ecod == null) {
+                ecod = this.defaultContentEncoding;
+            }
             InputStream in = urlConnection.getInputStream();
             BufferedReader bufferedReader = new BufferedReader(
-                new InputStreamReader(in));
+                new InputStreamReader(in, ecod));
             httpResponse.contentCollection = new Vector<>();
             StringBuffer temp = new StringBuffer();
             String line = bufferedReader.readLine();
@@ -360,11 +364,6 @@ public class HttpRequester {
                 line = bufferedReader.readLine();
             }
             bufferedReader.close();
-
-            String ecod = urlConnection.getContentEncoding();
-            if (ecod == null) {
-                ecod = this.defaultContentEncoding;
-            }
 
             httpResponse.urlString = urlString;
 
@@ -378,7 +377,7 @@ public class HttpRequester {
             httpResponse.ref = urlConnection.getURL().getRef();
             httpResponse.userInfo = urlConnection.getURL().getUserInfo();
 
-            httpResponse.content = new String(temp.toString().getBytes(), ecod);
+            httpResponse.content = new String(temp.toString());
             httpResponse.contentEncoding = ecod;
             httpResponse.code = urlConnection.getResponseCode();
             httpResponse.message = urlConnection.getResponseMessage();
