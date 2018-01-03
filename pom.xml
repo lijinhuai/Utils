@@ -68,18 +68,32 @@
         </plugins>
     </build>
 
+    <!--<distributionManagement>-->
+    <!--<repository>-->
+    <!--<id>local-mvn-repo</id>-->
+    <!--<url>file:${user.home}/WorkSpaces/maven_repo/repository/</url>-->
+    <!--</repository>-->
+    <!--</distributionManagement>-->
+
+    <!--<repositories>-->
+    <!--<repository>-->
+    <!--<id>github-maven-repo</id>-->
+    <!--<url>https://raw.githubusercontent.com/lijinhuai/maven-repo/master/</url>-->
+    <!--</repository>-->
+    <!--</repositories>-->
+
     <distributionManagement>
         <repository>
-            <id>local-mvn-repo</id>
-            <url>file:${user.home}/WorkSpaces/maven_repo/repository/</url>
+            <id>cybertech-releases</id>
+            <name>Cybertech Releases Repository</name>
+            <url>http://58.211.187.150:8083/mvn/content/repositories/releases/</url>
         </repository>
-    </distributionManagement>
 
-    <repositories>
-        <repository>
-            <id>github-maven-repo</id>
-            <url>https://raw.githubusercontent.com/lijinhuai/maven-repo/master/</url>
-        </repository>
-    </repositories>
+        <snapshotRepository>
+            <id>cybertech-snapshots</id>
+            <name>Cybertech Snapshots Repository</name>
+            <url>http://58.211.187.150:8083/mvn/content/repositories/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
 
 </project>
