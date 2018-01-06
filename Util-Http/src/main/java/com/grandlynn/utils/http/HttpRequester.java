@@ -26,6 +26,7 @@ package com.grandlynn.utils.http;
 
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -135,17 +136,6 @@ public class HttpRequester {
     }
 
     /**
-     * 以JSON传参方式发送POST请求
-     *
-     * @param urlString URL地址
-     * @return 响应对象
-     * @throws IOException
-     */
-    public HttpResponse sendPostRequestJson(String urlString) throws IOException {
-        return this.sendHttpRequestJson(urlString, "POST", null, null);
-    }
-
-    /**
      * 发送POST请求
      *
      * @param urlString URL地址
@@ -172,12 +162,12 @@ public class HttpRequester {
      * 以JSON传参方式发送POST请求
      *
      * @param urlString URL地址
-     * @param params    参数集合
+     * @param object    对象
      * @return 响应对象
      * @throws IOException
      */
-    public HttpResponse sendPostRequestJson(String urlString, Map<String, String> params) throws IOException {
-        return this.sendHttpRequestJson(urlString, "POST", params, null);
+    public HttpResponse sendPostRequestJson(String urlString, Object object) throws IOException {
+        return this.sendHttpRequestJson(urlString, "POST", object, null);
     }
 
     /**
@@ -209,13 +199,13 @@ public class HttpRequester {
      * 以JSON传参方式发送POST请求
      *
      * @param urlString URL地址
-     * @param params    参数集合
+     * @param object    数据对象
      * @param propertys 请求属性
      * @return 响应对象
      * @throws IOException
      */
-    public HttpResponse sendPostRequestJson(String urlString, Map<String, String> params, Map<String, String> propertys) throws IOException {
-        return this.sendHttpRequestJson(urlString, "POST", params, propertys);
+    public HttpResponse sendPostRequestJson(String urlString, Object object, Map<String, String> propertys) throws IOException {
+        return this.sendHttpRequestJson(urlString, "POST", object, propertys);
     }
 
     /**
@@ -277,19 +267,28 @@ public class HttpRequester {
      * JSON字符串的参数
      *
      * @param urlString
-     * @return 响映对象
+     * @param method
+     * @param object
+     * @param propertys
      * @throws IOException
+     * @return响映对象
      */
-    private HttpResponse sendHttpRequestJson(String urlString, String method, Map<String, String> parameters, Map<String, String> propertys) throws IOException {
+    private HttpResponse sendHttpRequestJson(String urlString, String method, Object object, Map<String, String> propertys) throws IOException {
         HttpURLConnection urlConnection;
 
         URL url = new URL(urlString);
         urlConnection = (HttpURLConnection) url.openConnection();
 
         urlConnection.setRequestMethod(method);
+        // 设置允许输出
         urlConnection.setDoOutput(true);
+        // 设置允许输入
         urlConnection.setDoInput(true);
+        // 设置不用缓存
         urlConnection.setUseCaches(false);
+
+        // 设置维持长连接
+        urlConnection.setRequestProperty("Connection", "Keep-Alive");
 
         if (propertys != null) {
             for (String key : propertys.keySet()) {
@@ -297,12 +296,16 @@ public class HttpRequester {
             }
         }
 
-        if (parameters != null) {
-            String jsonParams = JSON.toJSONString(parameters);
-            byte[] writebytes = jsonParams.getBytes();
+        if (object != null) {
+            JSONObject jsonObject = JSONObject.parseObject(JSON.toJSONString(object));
+
+            //转换为字节数组
+            byte[] writeBytes = jsonObject.toString().getBytes();
             // 设置文件长度
-            urlConnection.setRequestProperty("Content-Length", String.valueOf(writebytes.length));
-            urlConnection.getOutputStream().write(jsonParams.getBytes());
+            urlConnection.setRequestProperty("Content-Length", String.valueOf(writeBytes.length));
+            // 设置文件类型
+            urlConnection.setRequestProperty("Content-Type", "application/json");
+            urlConnection.getOutputStream().write(writeBytes);
             urlConnection.getOutputStream().flush();
             urlConnection.getOutputStream().close();
         }
@@ -314,8 +317,11 @@ public class HttpRequester {
      * 发送HTTP请求
      *
      * @param urlString
-     * @return IO流
+     * @param method
+     * @param parameters
+     * @param propertys
      * @throws IOException
+     * @returnIO流
      */
     private InputStream sendHttpRequestResponseStream(String urlString, String method, Map<String, String> parameters, Map<String, String> propertys) throws IOException {
         HttpURLConnection urlConnection;
@@ -341,9 +347,10 @@ public class HttpRequester {
     /**
      * 得到响应对象
      *
+     * @param urlString
      * @param urlConnection
-     * @return 响应对象
      * @throws IOException
+     * @return响应对象
      */
     private HttpResponse makeContent(String urlString, HttpURLConnection urlConnection) throws IOException {
         HttpResponse httpResponse = new HttpResponse();
@@ -405,6 +412,8 @@ public class HttpRequester {
 
     /**
      * 设置默认的响应字符集
+     *
+     * @param defaultContentEncoding
      */
     public void setDefaultContentEncoding(String defaultContentEncoding) {
         this.defaultContentEncoding = defaultContentEncoding;
