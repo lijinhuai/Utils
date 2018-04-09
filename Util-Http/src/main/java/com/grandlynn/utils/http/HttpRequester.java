@@ -428,15 +428,18 @@ public class HttpRequester {
     private StringBuffer getParamStrBuffer(Map<String, String> parameters) {
         StringBuffer param = new StringBuffer();
         int i = 0;
-        for (String key : parameters.keySet()) {
-            if (i == 0) {
-                param.append("?");
-            } else {
-                param.append("&");
+        if (null != parameters) {
+            for (String key : parameters.keySet()) {
+                if (i == 0) {
+                    param.append("?");
+                } else {
+                    param.append("&");
+                }
+                param.append(key).append("=").append(parameters.get(key));
+                i++;
             }
-            param.append(key).append("=").append(parameters.get(key));
-            i++;
         }
+
         return param;
     }
 }
