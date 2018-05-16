@@ -44,6 +44,7 @@
         <module>Util-Date</module>
         <module>Util-Base64</module>
         <module>Util-Stream</module>
+        <module>Util-GPS</module>
     </modules>
 
     <properties>
