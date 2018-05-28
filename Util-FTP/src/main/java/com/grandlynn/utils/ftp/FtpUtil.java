@@ -227,7 +227,8 @@ public class FtpUtil {
         boolean result = false;
         if (ftpClient.isConnected()) {
             try {
-                result = ftpClient.deleteFile(remotePath + fileName);
+                ftpClient.changeWorkingDirectory(remotePath);
+                result = ftpClient.deleteFile(fileName);
             } catch (IOException e) {
                 e.printStackTrace();
             }
