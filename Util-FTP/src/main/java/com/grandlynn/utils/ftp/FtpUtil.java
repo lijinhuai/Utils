@@ -50,7 +50,7 @@ public class FtpUtil {
      * @param password 密码
      * @return
      */
-    public static FTPClient connectFtp(String host, int port, String username, String password) {
+    public static FTPClient connectFtp(String host, int port, String username, String password) throws IOException {
         FTPClient ftpClient = new FTPClient();
         try {
             int reply;
@@ -65,6 +65,7 @@ public class FtpUtil {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            throw e;
         }
         return ftpClient;
     }
@@ -74,11 +75,13 @@ public class FtpUtil {
      *
      * @param ftpClient 已连接的FTP
      */
-    public static void disconnectFtp(FTPClient ftpClient) {
+    public static void disconnectFtp(FTPClient ftpClient) throws IOException {
         if (ftpClient.isConnected()) {
             try {
                 ftpClient.disconnect();
-            } catch (IOException ioe) {
+            } catch (IOException e) {
+                e.printStackTrace();
+                throw e;
             }
         }
     }
@@ -94,7 +97,7 @@ public class FtpUtil {
      * @param input     输入流
      * @return 成功返回true，否则返回false
      */
-    public static boolean uploadFile(FTPClient ftpClient, String basePath, String filePath, String fileName, InputStream input) {
+    public static boolean uploadFile(FTPClient ftpClient, String basePath, String filePath, String fileName, InputStream input) throws IOException {
         boolean result = false;
         if (ftpClient.isConnected()) {
             try {
@@ -128,6 +131,7 @@ public class FtpUtil {
                 result = true;
             } catch (IOException e) {
                 e.printStackTrace();
+                throw e;
             }
         }
         return result;
@@ -142,7 +146,7 @@ public class FtpUtil {
      * @param localPath  下载后保存到本地的路径
      * @return
      */
-    public static boolean downloadFile(FTPClient ftpClient, String remotePath, String fileName, String localPath) {
+    public static boolean downloadFile(FTPClient ftpClient, String remotePath, String fileName, String localPath) throws IOException {
         boolean result = false;
         if (ftpClient.isConnected()) {
             try {
@@ -164,6 +168,7 @@ public class FtpUtil {
                 result = true;
             } catch (IOException e) {
                 e.printStackTrace();
+                throw e;
             }
         }
         return result;
@@ -177,7 +182,7 @@ public class FtpUtil {
      * @return
      */
 
-    public static List<String> getFileNameList(FTPClient ftpClient, String remotePath) {
+    public static List<String> getFileNameList(FTPClient ftpClient, String remotePath) throws IOException {
         List<String> list = new ArrayList<>();
         if (ftpClient.isConnected()) {
             try {
@@ -185,6 +190,7 @@ public class FtpUtil {
                 list = Arrays.asList(fileNames);
             } catch (IOException e) {
                 e.printStackTrace();
+                throw e;
             }
         }
         return list;
@@ -199,7 +205,7 @@ public class FtpUtil {
      * @param fileName   读取的文件名
      * @return
      */
-    public static InputStream getFileStream(FTPClient ftpClient, String remotePath, String fileName) {
+    public static InputStream getFileStream(FTPClient ftpClient, String remotePath, String fileName) throws IOException {
         InputStream ins = null;
         if (ftpClient.isConnected()) {
             try {
@@ -208,6 +214,7 @@ public class FtpUtil {
                 ins = ftpClient.retrieveFileStream(fileName);
             } catch (IOException e) {
                 e.printStackTrace();
+                throw e;
             }
         }
         return ins;
@@ -223,7 +230,7 @@ public class FtpUtil {
      * @return
      */
 
-    public static boolean deleteFile(FTPClient ftpClient, String remotePath, String fileName) {
+    public static boolean deleteFile(FTPClient ftpClient, String remotePath, String fileName) throws IOException {
         boolean result = false;
         if (ftpClient.isConnected()) {
             try {
@@ -231,6 +238,7 @@ public class FtpUtil {
                 result = ftpClient.deleteFile(fileName);
             } catch (IOException e) {
                 e.printStackTrace();
+                throw e;
             }
         }
         return result;
@@ -245,7 +253,7 @@ public class FtpUtil {
      * @return
      */
 
-    public static boolean deleteDirectory(FTPClient ftpClient, String remotePath) {
+    public static boolean deleteDirectory(FTPClient ftpClient, String remotePath) throws IOException {
         boolean result = false;
         if (ftpClient.isConnected()) {
             try {
@@ -255,6 +263,7 @@ public class FtpUtil {
                 }
             } catch (IOException e) {
                 e.printStackTrace();
+                throw e;
             }
         }
         return result;
