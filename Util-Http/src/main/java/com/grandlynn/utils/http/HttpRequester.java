@@ -26,15 +26,18 @@ package com.grandlynn.utils.http;
 
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
@@ -297,10 +300,16 @@ public class HttpRequester {
         }
 
         if (object != null) {
-            JSONObject jsonObject = JSONObject.parseObject(JSON.toJSONString(object));
-
-            //转换为字节数组
-            byte[] writeBytes = jsonObject.toString().getBytes();
+            byte[] writeBytes;
+            if (object instanceof List) {
+                JSONArray jsonArray = JSONArray.parseArray(JSON.toJSONString(object));
+                //转换为字节数组
+                writeBytes = jsonArray.toString().getBytes();
+            } else {
+                JSONObject jsonObject = JSONObject.parseObject(JSON.toJSONString(object));
+                //转换为字节数组
+                writeBytes = jsonObject.toString().getBytes();
+            }
             // 设置文件长度
             urlConnection.setRequestProperty("Content-Length", String.valueOf(writeBytes.length));
             // 设置文件类型
@@ -392,7 +401,9 @@ public class HttpRequester {
             httpResponse.method = urlConnection.getRequestMethod();
             httpResponse.connectTimeout = urlConnection.getConnectTimeout();
             httpResponse.readTimeout = urlConnection.getReadTimeout();
-
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
             return httpResponse;
         } catch (IOException e) {
             throw e;
