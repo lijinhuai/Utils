@@ -54,6 +54,10 @@ public class FtpUtil {
         FTPClient ftpClient = new FTPClient();
         try {
             int reply;
+            // 设定连接超时时间
+            ftpClient.setDefaultTimeout(10 * 1000);
+            ftpClient.setConnectTimeout(10 * 1000);
+            ftpClient.setDataTimeout(10 * 1000);
             // 连接FTP服务器
             ftpClient.connect(host, port);
             // 如果采用默认端口，可以使用ftp.connect(host)的方式直接连接FTP服务器
