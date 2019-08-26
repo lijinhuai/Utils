@@ -31,7 +31,7 @@
     <groupId>com.grandlynn</groupId>
     <artifactId>Utils</artifactId>
     <packaging>pom</packaging>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
     <modules>
         <module>Util-CodeGenerator</module>
         <module>Util-FTP</module>
